@@ -177,6 +177,51 @@ class _StaticTabViewScreenState extends State<StaticTabViewScreen> {
         align-items: center;
       }
 
+      .at-sidebar-divider {
+        height: 1px;
+        background: rgba(255, 255, 255, 0.1);
+        margin: 10px 5px;
+      }
+
+      .at-sidebar-speed {
+        display: flex;
+        position: relative;
+        padding: 5px;
+        color: #fff;
+        transition: background 0.2s;
+      }
+
+      .at-sidebar-speed > div {
+        display: flex;
+        width: 100%;
+        gap: 5px;
+      }
+
+      .at-sidebar-speed .speed-icon {
+        flex-shrink: 0;
+        width: 64px;
+        height: 64px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .at-sidebar-speed i {
+        font-size: 24px;
+        opacity: 0.8;
+      }
+
+      .at-sidebar-speed select {
+        width: auto;
+        max-width: 65px;
+        background: #333;
+        color: #fff;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        padding: 5px;
+        border-radius: 4px;
+        align-self: center;
+      }
+
       .at-track-name {
         font-weight: bold;
         margin-bottom: 5px;
@@ -234,7 +279,7 @@ class _StaticTabViewScreenState extends State<StaticTabViewScreen> {
       }
 
       .at-song-info {
-        margin: 0 15px;
+        margin: 0 8px;
       }
 
       .at-song-title {
@@ -242,13 +287,15 @@ class _StaticTabViewScreenState extends State<StaticTabViewScreen> {
       }
 
       .at-song-position {
-        margin-left: 15px;
+        margin-left: 8px;
         font-family: monospace;
       }
 
       .at-speed select,
       .at-zoom select,
       .at-layout select {
+        width: fit-content;
+        min-width: 70px;
         background: #333;
         color: #fff;
         border: 1px solid rgba(255, 255, 255, 0.2);
@@ -301,6 +348,25 @@ class _StaticTabViewScreenState extends State<StaticTabViewScreen> {
         <div class="at-sidebar">
           <div class="at-sidebar-content">
             <div class="at-track-list"></div>
+            <div class="at-sidebar-divider"></div>
+            <div class="at-sidebar-speed">
+              <div>
+                <div class="speed-icon">
+                  <i class="fas fa-tachometer-alt"></i>
+                </div>
+                <select class="at-speed-select">
+                  <option value="0.25">25%</option>
+                  <option value="0.5">50%</option>
+                  <option value="0.75">75%</option>
+                  <option value="0.9">90%</option>
+                  <option value="1" selected>100%</option>
+                  <option value="1.1">110%</option>
+                  <option value="1.25">125%</option>
+                  <option value="1.5">150%</option>
+                  <option value="2">200%</option>
+                </select>
+              </div>
+            </div>
           </div>
         </div>
         <div class="at-viewport">
@@ -323,20 +389,7 @@ class _StaticTabViewScreenState extends State<StaticTabViewScreen> {
           <div class="at-song-position">00:00 / 00:00</div>
         </div>
         <div class="at-controls-right">
-          <div class="at-speed">
-            <i class="fas fa-tachometer-alt"></i>
-            <select>
-              <option value="0.25">25%</option>
-              <option value="0.5">50%</option>
-              <option value="0.75">75%</option>
-              <option value="0.9">90%</option>
-              <option value="1" selected>100%</option>
-              <option value="1.1">110%</option>
-              <option value="1.25">125%</option>
-              <option value="1.5">150%</option>
-              <option value="2">200%</option>
-            </select>
-          </div>
+
           <!-- Commenting out zoom control
           <div class="at-zoom">
             <i class="fas fa-search"></i>
@@ -571,6 +624,8 @@ class _StaticTabViewScreenState extends State<StaticTabViewScreen> {
           formatDuration(e.currentTime) + " / " + formatDuration(e.endTime);
       });
 
+      // Commenting out zoom control handler
+      /*
       const zoom = wrapper.querySelector(".at-controls .at-zoom select");
       zoom.onchange = () => {
         const zoomLevel = parseInt(zoom.value) / 100;
@@ -578,9 +633,10 @@ class _StaticTabViewScreenState extends State<StaticTabViewScreen> {
         api.updateSettings();
         api.render();
       };
+      */
 
       // speed control
-      const speed = wrapper.querySelector(".at-controls .at-speed select");
+      const speed = wrapper.querySelector(".at-sidebar-speed .at-speed-select");
       speed.onchange = () => {
         const speedLevel = parseFloat(speed.value);
         api.playbackSpeed = speedLevel;
