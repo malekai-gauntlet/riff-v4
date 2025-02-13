@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 // ignore: avoid_web_libraries_in_flutter
 import 'dart:html' as html;
-import 'dart:ui' as ui;
+import 'dart:ui_web' as ui;
 
 /// A screen that displays guitar tabs using AlphaTab in an IFrame for web
 class StaticTabViewScreen extends StatefulWidget {
@@ -25,18 +25,20 @@ class _StaticTabViewScreenState extends State<StaticTabViewScreen> {
   void initState() {
     super.initState();
     // Register the view factory
+    // Register the view factory
     ui.platformViewRegistry.registerViewFactory(
-      viewId,
-      (int viewId) {
-        final iframe = html.IFrameElement()
-          ..style.border = 'none'
-          ..style.height = '100%'
-          ..style.width = '100%'
-          ..srcdoc = _getHtmlContent();
-        
-        return iframe;
-      },
-    );
+        viewId,
+        (int viewId) {
+          final iframe = html.IFrameElement()
+            ..style.border = 'none'
+            ..style.height = '100%'
+            ..style.width = '100%'
+            ..srcdoc = _getHtmlContent();
+          
+          return iframe;
+        },
+      );
+    }
   }
 
   String _getHtmlContent() {
