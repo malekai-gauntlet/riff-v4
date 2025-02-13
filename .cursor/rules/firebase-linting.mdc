@@ -1,0 +1,163 @@
+---
+description: Firebase Linting Standards
+globs: "functions/**/*.{ts,js}"
+---
+# Firebase Cloud Functions Linting Standards
+
+Enforces consistent code style for Firebase Cloud Functions.
+
+<rule>
+name: firebase_linting
+description: Standards for code formatting in Firebase Cloud Functions
+filters:
+  - type: file_extension
+    pattern: "\\.(ts|js)$"
+  - type: path
+    pattern: "functions/"
+
+actions:
+  - type: suggest
+    message: |
+      Firebase Cloud Functions code must follow these formatting rules:
+
+      1. String Quotes:
+         ```typescript
+         // ❌ Wrong
+         import foo from 'some-package';
+         const str = 'hello';
+
+         // ✅ Correct
+         import foo from "some-package";
+         const str = "hello";
+         ```
+
+      2. Trailing Commas:
+         ```typescript
+         // ❌ Wrong
+         const obj = {
+           foo: "bar",
+           baz: "qux"  // Missing trailing comma
+         };
+
+         // ✅ Correct
+         const obj = {
+           foo: "bar",
+           baz: "qux",  // Has trailing comma
+         };
+         ```
+
+      3. Constructor Names:
+         ```typescript
+         // ❌ Wrong
+         const detector = SomeConstructor();
+
+         // ✅ Correct
+         const detector = new SomeConstructor();
+         // OR use lowercase alias
+         const someConstructor = SomeConstructor;
+         const detector = someConstructor();
+         ```
+
+      4. Spacing in Objects/Imports:
+         ```typescript
+         // ❌ Wrong
+         import {foo,bar} from "package";
+         const obj = {foo:"bar"};
+
+         // ✅ Correct
+         import { foo, bar } from "package";
+         const obj = { foo: "bar" };
+         ```
+
+      5. File Endings and Spacing:
+         ```typescript
+         // ❌ Wrong - Trailing spaces after line
+         const myFunction = () => {    
+           
+         // ❌ Wrong - Multiple blank lines between code
+
+         return value;
+         };
+         
+         // ✅ Correct
+         const myFunction = () => {
+           return value;
+         };
+         ```
+         
+         CRITICAL RULES:
+         - ‼️ NO trailing spaces after any line (MOST COMMON DEPLOYMENT BLOCKER)
+         - ‼️ ONE newline at end of file (not zero, not multiple)
+         - ‼️ NO spaces before line endings
+         - ‼️ NO multiple blank lines between code blocks
+         
+         Common Places to Check for Trailing Spaces:
+         - After comment lines (// comment   )
+         - After import statements
+         - Between function blocks
+         - After opening braces
+         - Inside template literals
+         
+         VS Code Tips:
+         1. Enable "Trim Trailing Whitespace" setting:
+            - File > Preferences > Settings
+            - Search for "Trim Trailing Whitespace"
+            - Check the box
+         2. Show whitespace characters to spot issues:
+           - View > Render Whitespace
+
+      6. TypeScript Type Safety:
+         ```typescript
+         // ❌ Wrong - Using @ts-ignore
+         // @ts-ignore
+         const result = unsafeOperation();
+
+         // ✅ Correct - Proper type handling
+         const result = unsafeOperation() as ExpectedType;
+         // OR
+         const result = <ExpectedType>unsafeOperation();
+         ```
+
+         CRITICAL RULES:
+         - ‼️ NEVER use @ts-ignore (it suppresses important type checks)
+         - ‼️ Always use proper type assertions or type guards
+         - ‼️ Fix type issues instead of bypassing them
+         
+         Exception Cases:
+         If you absolutely must use @ts-ignore (rare cases):
+         1. Document WHY it's necessary
+         2. What the actual types are
+         3. Why it's safe to ignore
+         Example:
+         ```typescript
+         // @ts-ignore: Library 'legacy-module' has incorrect types
+         // Actual type is Buffer, but types show Uint8Array
+         const data = legacyFunction();
+         ```
+
+      7. Constructor Functions (like Pitchfinder.YIN):
+         ```typescript
+         // ❌ Wrong - Direct usage of capitalized function
+         const detector = YIN();
+
+         // ✅ Correct - Using eslint disable comment
+         // eslint-disable-next-line new-cap
+         const detector = YIN();
+         ```
+
+examples:
+  - input: |
+      import {foo} from 'package';   
+      const obj = {
+        foo: "bar"
+      }
+    output: |
+      import { foo } from "package";
+      const obj = {
+        foo: "bar",
+      };
+
+metadata:
+  priority: critical
+  version: 1.1
+</rule> 
